@@ -1,0 +1,49 @@
+.block {
+  display: block;
+  width: 500px;
+  padding: 0px;
+}
+
+.form {
+  padding: 20px;
+}
+.label {
+  display: block;
+  margin-bottom: 20px;
+  font-size: 18px;
+  line-height: 1.5;
+}
+.input {
+  display: block;
+}
+.button {
+  border-radius: 5px;
+  border: none;
+  background-color: #00aeff;
+  border: 1px solid #00aeff;
+  font-size: 14px;
+  font-weight: bold;
+  cursor: pointer;
+  color: #fff;
+  outline: none;
+}
+
+.button:hover {
+  background-color: #fff;
+  border: 1px solid #00aeff;
+  color: #00aeff;
+}
+
+.ulBlock {
+  display: flex;
+  flex-direction: row;
+  align-items: flex-start;
+  padding: 0;
+}
+.li {
+  margin-right: 14px;
+  margin-bottom: 10px;
+}
+.span {
+  margin-right: 20px;
+}
