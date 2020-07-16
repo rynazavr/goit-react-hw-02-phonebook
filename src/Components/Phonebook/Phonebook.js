@@ -1,4 +1,4 @@
-import React, { Component, useState } from "react";
+import React, { Component, useState, cloneElement } from "react";
 import ContactForm from "../ContactForm/ContactForm";
 import Filter from "../Filter/Filter";
 import ContactList from "../ContactList/ContactList";
@@ -27,28 +27,53 @@ class Phonebook extends Component {
     this.setState({ [name]: value });
   };
   submitHandler = (e) => {
-    const { name, number } = this.state;
     e.preventDefault();
-    const singleContact = {
-      name,
-      number,
-      id: shortid.generate(),
-    };
-    console.log(singleContact);
-    this.setState((prevState) => ({
-      contacts: [...prevState.contacts, singleContact],
-    }));
-    this.setState({ ...this.formInitialState });
+    const { name, number } = this.state;
+    const result = this.state.contacts.some(
+      (contact) => contact.name === this.state.name
+    );
+    if (!result) {
+      const singleContact = {
+        name,
+        number,
+        id: shortid.generate(),
+      };
+      console.log(singleContact);
+
+      this.setState((prevState) => ({
+        contacts: [...prevState.contacts, singleContact],
+      }));
+      this.setState({ ...this.formInitialState });
+    } else {
+      alert(`${name} is already in list`);
+    }
+
+    console.log("result", result);
   };
 
-  //   deleteContact = (id) => {
-  //     this.setState((prev) => ({
-  //       contacts: prev.contacts.filter((contact) => contact.id !== id),
-  //     }));
-  //   };
-
+  deleteContact = (event) => {
+    const id = event.target.id;
+    this.setState((prevState) => ({
+      contacts: prevState.contacts.filter((contact) => contact.id !== id),
+    }));
+  };
+  getContacts = () => {
+    if (this.state.filter !== "") {
+      return this.state.contacts.filter((contact) => {
+        return contact.name
+          .toLocaleLowerCase()
+          .includes(this.state.filter.toLocaleLowerCase());
+      });
+    } else return this.state.contacts;
+  };
+  // checkContacts = (event) => {
+  //   const inputName = event.target.name;
+  //   if (this.state.contacts.name === inputName) {
+  //     alert("{inputName} is already in list");
+  //   }
+  // };
   render() {
-    const { name, number, contacts, filter } = this.state;
+    const { name, number, filter } = this.state;
     return (
       <div>
         <h1>Phonebook</h1>
@@ -63,35 +88,11 @@ class Phonebook extends Component {
         <h2>Contacts</h2>
         <Filter filter={filter} inputHandler={this.inputHandler} />
         <ContactList
-          //   deleteContact={this.deleteContact}
-          contacts={contacts}
+          deleteContact={this.deleteContact}
+          contacts={this.getContacts()}
         />
       </div>
     );
   }
 }
 export default Phonebook;
-
-// const App = () => {
-//   const [contacts, setContacts] = contacts([
-//     { id: "id-1", name: "Rosie Simpson", number: "459-12-56" },
-//     { id: "id-2", name: "Hermione Kline", number: "443-89-12" },
-//     { id: "id-3", name: "Eden Clements", number: "645-17-79" },
-//     { id: "id-4", name: "Annie Copeland", number: "227-91-26" },
-//   ]);
-//   const [filter, setFilter] = filter("");
-//   const [name, setName] = name("");
-//   const [number, setNumber] = number("");
-
-//   return (
-//     <div>
-//       <h1>Phonebook</h1>
-//       <ContactForm getData={getData} />
-
-//       <h2>Contacts</h2>
-//       <Filter />
-//       <ContactList />
-//     </div>
-//   );
-// };
-// export default App;

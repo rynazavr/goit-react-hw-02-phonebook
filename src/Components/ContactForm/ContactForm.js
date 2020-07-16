@@ -36,5 +36,3 @@ const ContactForm = ({ submitHandler, inputHandler, number, name }) => {
 };
 
 export default ContactForm;
-
-// <label className={styles.label} htmlFor={this.loginInputId}></label>
