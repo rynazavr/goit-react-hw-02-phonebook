@@ -1,4 +1,4 @@
-import React, { Component, useState, cloneElement } from "react";
+import React, { Component } from "react";
 import ContactForm from "../ContactForm/ContactForm";
 import Filter from "../Filter/Filter";
 import ContactList from "../ContactList/ContactList";
@@ -21,6 +21,24 @@ class Phonebook extends Component {
       { id: shortid.generate(), name: "Annie Copeland", number: "227-91-26" },
     ],
   };
+  componentDidMount() {
+    console.log("componentdidmount");
+    const previouseContacts = localStorage.getItem("contacts");
+    if (previouseContacts) {
+      // console.log(previouseContacts);
+      this.setState({
+        contacts: JSON.parse(previouseContacts),
+      });
+    }
+  }
+  componentDidUpdate(prevProps, prevState) {
+    console.log("componentdidupdate");
+    // console.log("prevState", prevState);
+    // console.log("this.state", this.state);
+    if (prevState.contacts !== this.state.contacts) {
+      localStorage.setItem("contacts", JSON.stringify(this.state.contacts));
+    }
+  }
 
   inputHandler = ({ target }) => {
     const { value, name } = target;
@@ -38,7 +56,7 @@ class Phonebook extends Component {
         number,
         id: shortid.generate(),
       };
-      console.log(singleContact);
+      // console.log(singleContact);
 
       this.setState((prevState) => ({
         contacts: [...prevState.contacts, singleContact],
@@ -48,7 +66,7 @@ class Phonebook extends Component {
       alert(`${name} is already in list`);
     }
 
-    console.log("result", result);
+    // console.log("result", result);
   };
 
   deleteContact = (event) => {
@@ -66,12 +84,7 @@ class Phonebook extends Component {
       });
     } else return this.state.contacts;
   };
-  // checkContacts = (event) => {
-  //   const inputName = event.target.name;
-  //   if (this.state.contacts.name === inputName) {
-  //     alert("{inputName} is already in list");
-  //   }
-  // };
+
   render() {
     const { name, number, filter } = this.state;
     return (
